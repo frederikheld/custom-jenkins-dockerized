@@ -11,7 +11,7 @@ Most probably you want to run the container in detached mode so that you can clo
 
 To run a container in detached mode, use the `-d` flag.
 
-`$ docker-compose up -d`
+    $ docker-compose up -d
 
 This will create a container named `custom-jenkins-dockerized_jenkins_1`. The number at the end depends on how many containers you had started in parallel.
 
@@ -30,11 +30,11 @@ To make sure that the configuration is done by an autorized user, Jenkins will a
 
 The easiest way to get is is to open a shell inside the container and read the file as you would do on any other computer.
 
-`$ docker exec -it custom-jenkins-dockerized_jenkins_1 /bin/bash`
+    $ docker exec -it custom-jenkins-dockerized_jenkins_1 /bin/bash
 
 You are now inside the container and can use the bash as usual.
 
-`/$ cat /var/jenkins_home/secrets/initialAdminPassword`
+    $ cat /var/jenkins_home/secrets/initialAdminPassword
 
 Copy the output and paste it into the input field on the web interface.
 
@@ -42,12 +42,24 @@ Copy the output and paste it into the input field on the web interface.
 
 To stop the container run
 
-`$ docker-compose down`
+    $ docker-compose down
 
 ## Re-build the container
 
 If you want to re-build the image before starting it, use the flag `--force-recreate`
 
-`$ docker-compose up --force-recreate -d`
+    $ docker-compose up --force-recreate -d
 
 This will not affect your data stored in the volume `docker_home`.
+
+## Upgrade or install software inside the container
+
+Inside the container you won't be able to use `sudo`, so you have to enter the container with root privileges:
+
+    $ docker exec -it -u root custom-jenkins-dockerized_jenkins_1 /bin/bash
+
+Now you can run
+
+    $ apt update
+    $ apt upgrade
+    $ apt install <package>
